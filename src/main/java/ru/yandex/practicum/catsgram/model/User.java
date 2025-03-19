@@ -10,8 +10,8 @@ import java.time.Instant;
 public class User {
 
     private Long id;
-    private String username;
     private String email;
+    private String username;
     private String password;
     private Instant registrationDate;
 }
