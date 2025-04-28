@@ -16,6 +16,7 @@ import java.util.Optional;
 public class BaseRepository<T> {
     protected final JdbcTemplate jdbc;
     protected final RowMapper<T> mapper;
+    private final Class<T> entityType;
 
     protected Optional<T> findOne(String query, Object... params) {
         try {
@@ -27,49 +28,37 @@ public class BaseRepository<T> {
     }
 
     protected List<T> findMany(String query, Object... params) {
-        return jdbc.query(query, mapper, params);
+        return jdbc.queryForList(query, entityType, params);
     }
 
-    protected boolean delete(String query, long id) {
+    public boolean delete(String query, long id) {
         int rowsDeleted = jdbc.update(query, id);
         return rowsDeleted > 0;
+    }
+
+    protected long insert(String query, Object... params) {
+        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbc.update(connection -> {
+            PreparedStatement ps = connection
+                    .prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            for (int idx = 0; idx < params.length; idx++) {
+                ps.setObject(idx + 1, params[idx]);
+            }
+            return ps;
+        }, keyHolder);
+
+        Long id = keyHolder.getKeyAs(Long.class);
+        if (id != null) {
+            return id;
+        } else {
+            throw new InternalServerException("Не удалось сохранить данные");
+        }
     }
 
     protected void update(String query, Object... params) {
         int rowsUpdated = jdbc.update(query, params);
         if (rowsUpdated == 0) {
             throw new InternalServerException("Не удалось обновить данные");
-        }
-    }
-
-    protected long insert(String query, Object... params) {
-        // Создаем объект GeneratedKeyHolder, который будет хранить сгенерированный ключ
-        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
-
-        // Выполняем SQL-запрос с параметрами
-        jdbc.update(connection -> {
-            // Подготавливаем SQL-запрос с указанием, что мы хотим получить сгенерированный ключ
-            PreparedStatement ps = connection
-                    .prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-
-            // Устанавливаем параметры запроса
-            for (int idx = 0; idx < params.length; idx++) {
-                ps.setObject(idx + 1, params[idx]);
-            }
-
-            // Возвращаем подготовленный запрос
-            return ps;
-        }, keyHolder);
-
-        // Получаем сгенерированный ключ как объект Long
-        Long id = keyHolder.getKeyAs(Long.class);
-
-        // Если ключ не равен null, возвращаем его
-        if (id != null) {
-            return id;
-        } else {
-            // Если ключ равен null, выбрасываем исключение
-            throw new InternalServerException("Не удалось сохранить данные");
         }
     }
 }

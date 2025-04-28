@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.yandex.practicum.catsgram.dto.image.ImageDto;
-import ru.yandex.practicum.catsgram.dto.image.ImageUploadResponse;
+import ru.yandex.practicum.catsgram.dto.ImageDto;
+import ru.yandex.practicum.catsgram.dto.ImageUploadResponse;
 import ru.yandex.practicum.catsgram.model.ImageData;
 import ru.yandex.practicum.catsgram.service.ImageService;
 

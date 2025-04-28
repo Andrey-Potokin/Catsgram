@@ -17,7 +17,7 @@ public class ImageRepository extends BaseRepository<Image> {
     private static final String DELETE_QUERY = "DELETE FROM image_storage WHERE id = ?";
 
     public ImageRepository(JdbcTemplate jdbc, ImageRowMapper mapper) {
-        super(jdbc, mapper);
+        super(jdbc, mapper, Image.class);
     }
 
     public Image save(Image image) {

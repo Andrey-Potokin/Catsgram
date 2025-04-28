@@ -2,8 +2,8 @@ package ru.yandex.practicum.catsgram.mapper;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import ru.yandex.practicum.catsgram.dto.image.ImageDto;
-import ru.yandex.practicum.catsgram.dto.image.ImageUploadResponse;
+import ru.yandex.practicum.catsgram.dto.ImageDto;
+import ru.yandex.practicum.catsgram.dto.ImageUploadResponse;
 import ru.yandex.practicum.catsgram.model.Image;
 
 import java.nio.file.Path;

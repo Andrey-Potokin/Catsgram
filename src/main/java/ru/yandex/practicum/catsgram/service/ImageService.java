@@ -8,8 +8,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import ru.yandex.practicum.catsgram.dal.ImageRepository;
 import ru.yandex.practicum.catsgram.dal.PostRepository;
-import ru.yandex.practicum.catsgram.dto.image.ImageDto;
-import ru.yandex.practicum.catsgram.dto.image.ImageUploadResponse;
+import ru.yandex.practicum.catsgram.dto.ImageDto;
+import ru.yandex.practicum.catsgram.dto.ImageUploadResponse;
 import ru.yandex.practicum.catsgram.exception.ConditionsNotMetException;
 import ru.yandex.practicum.catsgram.exception.ImageFileException;
 import ru.yandex.practicum.catsgram.exception.NotFoundException;
@@ -81,7 +81,7 @@ public class ImageService {
             // Формирование пути для сохранения файла с учетом идентификаторов автора и поста
             Path uploadPath = Paths.get(
                     imageDirectory,
-                    String.valueOf(post.getAuthorId()),
+                    String.valueOf(post.getAuthor().getId()),
                     String.valueOf(post.getId())
             );
 
